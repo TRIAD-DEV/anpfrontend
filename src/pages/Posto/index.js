@@ -3,7 +3,7 @@ import {
     Box, 
     Button,  
     Container,  
-    Paper, 
+    Paper,  
     Step, 
     StepLabel, 
     Stepper, 
@@ -21,6 +21,7 @@ import EmpresaForm from "./EmpresaForm";
 import EnderecoForm from "./EnderecoForm";
 import ANPForm from "./ANPForm";
 import { AdicionarPosto } from "../../repositories/Posto";
+import SnackAlert from "../../components/SnackAlert";
 
 const steps = ['Empresa', 'Endereço', 'ANP'];
 
@@ -41,13 +42,13 @@ const columns = [
 ];
 
 const classPosto = {
-    cnpj: null,
-    razaoSocial: null,
-    nomeFantasia: null,
-    endereco: null,
-    complemento: null,
-    bairro: null,
-    cidade: null,
+    cnpj: '',
+    razaoSocial: '',
+    nomeFantasia: '',
+    endereco: '',
+    complemento: '',
+    bairro: '',
+    cidade: '',
     estadoId: 0,
     latitude: 0,
     longitude: 0,
@@ -59,8 +60,10 @@ function Posto () {
     const [criarPosto, setCriarPosto] = useState(classPosto);
     
     const [activeStep, setActiveStep] = useState(0);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openError, setOpenError] = useState(false);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -82,7 +85,7 @@ function Posto () {
     const handleAdd = () => {
         adicionarPosto(criarPosto);
     }
-  
+
     function getStepContent(step) {
       switch (step) {
         case 0:
@@ -100,13 +103,18 @@ function Posto () {
         try {
             let result = await AdicionarPosto(posto);
             console.log(result);
+            setOpenSuccess(true);
         } catch (error) {
             console.log(error);
+            setOpenError(true);
         }
     }
 
     return (
         <Container>
+            <SnackAlert open={openSuccess} setOpen={setOpenSuccess} severity="success" anchorOrigin={{vertical: 'top', horizontal: 'center'}} message="Posto criado com sucesso!" />
+            <SnackAlert open={openError} setOpen={setOpenError} severity="error" anchorOrigin={{vertical: 'top', horizontal: 'center'}} message="Error ao criar o posto!" />
+            
             <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
                 <Paper variant="outlined" sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
                     <Typography component="h1" variant="h4" align="center">

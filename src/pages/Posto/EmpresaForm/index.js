@@ -20,6 +20,7 @@ function EmpresaForm({ posto, setPosto }) {
                     fullWidth
                     autoComplete="00.000.000/0000-00"
                     variant="standard"
+                    value={posto.cnpj}
                     onChange={(event) => handleChange(event.target.value, 'cnpj')}
                 />
             </Grid>
@@ -31,6 +32,7 @@ function EmpresaForm({ posto, setPosto }) {
                     label="Razão Social"
                     fullWidth
                     variant="standard"
+                    value={posto.razaoSocial}
                     onChange={(event) => handleChange(event.target.value, 'razaoSocial')}
                 />
             </Grid>
@@ -41,6 +43,7 @@ function EmpresaForm({ posto, setPosto }) {
                     label="Nome Fantasia"
                     fullWidth
                     variant="standard"
+                    value={posto.nomeFantasia}
                     onChange={(event) => handleChange(event.target.value, 'nomeFantasia')}
                 />
             </Grid>

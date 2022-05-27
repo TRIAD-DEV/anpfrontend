@@ -35,6 +35,7 @@ function ANPForm({ posto, setPosto }) {
                 <RadioGroup
                     aria-labelledby="situacao"
                     name="radio-buttons-group"
+                    value={posto.situacaoId}
                     onChange={(event) => handleChange(parseInt(event.target.value), 'situacaoId')}
                 >
                     {situacoes.map(s => <FormControlLabel key={s.value} value={s.value} control={<Radio />} label={s.label} />)}

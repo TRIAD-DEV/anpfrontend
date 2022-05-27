@@ -37,6 +37,7 @@ function EnderecoForm({ posto, setPosto }) {
                     label="Endereço"
                     fullWidth
                     variant="standard"
+                    value={posto.endereco}
                     onChange={(event) => handleChange(event.target.value, 'endereco')}
                 />
             </Grid>
@@ -47,6 +48,7 @@ function EnderecoForm({ posto, setPosto }) {
                     label="Complemento"
                     fullWidth
                     variant="standard"
+                    value={posto.complemento}
                     onChange={(event) => handleChange(event.target.value, 'complemento')}
                 />
             </Grid>
@@ -58,6 +60,7 @@ function EnderecoForm({ posto, setPosto }) {
                     label="Bairro"
                     fullWidth
                     variant="standard"
+                    value={posto.bairro}
                     onChange={(event) => handleChange(event.target.value, 'bairro')}
                 />
             </Grid>
@@ -69,6 +72,7 @@ function EnderecoForm({ posto, setPosto }) {
                     label="Cidade"
                     fullWidth
                     variant="standard"
+                    value={posto.cidade}
                     onChange={(event) => handleChange(event.target.value, 'cidade')}
                 />
             </Grid>
@@ -99,6 +103,7 @@ function EnderecoForm({ posto, setPosto }) {
                     type="number"
                     fullWidth
                     variant="standard"
+                    value={posto.latitude}
                     onChange={(event) => handleChange(parseFloat(event.target.value), 'latitude')}
                 />
             </Grid>
@@ -111,6 +116,7 @@ function EnderecoForm({ posto, setPosto }) {
                     type="number"
                     fullWidth
                     variant="standard"
+                    value={posto.longitude}
                     onChange={(event) => handleChange(parseFloat(event.target.value), 'longitude')}
                 />
             </Grid>
