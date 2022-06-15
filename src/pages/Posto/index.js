@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { 
     Box, 
     Button,  
@@ -20,7 +20,7 @@ import {
 import EmpresaForm from "./EmpresaForm";
 import EnderecoForm from "./EnderecoForm";
 import ANPForm from "./ANPForm";
-import { AdicionarPosto } from "../../repositories/Posto";
+import { AdicionarPosto, RetornaPostos } from "../../repositories/Posto";
 import SnackAlert from "../../components/SnackAlert";
 
 const steps = ['Empresa', 'Endereço', 'ANP'];
@@ -64,6 +64,8 @@ function Posto () {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
+    
+    useEffect(()=>{RetornarPostos()},[])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -104,6 +106,18 @@ function Posto () {
             let result = await AdicionarPosto(posto);
             console.log(result);
             setOpenSuccess(true);
+        } catch (error) {
+            console.log(error);
+            setOpenError(true);
+        }
+    }
+
+    async function RetornarPostos(posto) {
+        try {
+            let result = await RetornaPostos();
+            console.log(result);
+            setOpenSuccess(true);
+            setData(result);
         } catch (error) {
             console.log(error);
             setOpenError(true);
@@ -177,14 +191,14 @@ function Posto () {
                     </TableHead>
                     <TableBody>
                         {data
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        /*.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)*/
                         .map((row) => {
                             return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                 {columns.map((column) => {
                                 const value = row[column.id];
                                 return (
-                                    <TableCell key={column.id} align={column.align}>
+                                    <TableCell key={row.id} align={column.align}>
                                     {column.format && typeof value === 'number'
                                         ? column.format(value)
                                         : value}

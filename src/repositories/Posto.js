@@ -16,3 +16,20 @@ export async function AdicionarPosto (posto) {
     
     return data;
 }
+
+export async function RetornaPostos(){
+    const response = await fetch('http://localhost:8081/dinamica/api/posto', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });       
+
+    let result = await handleErrors(response);
+    let jsonResult = await result.json();
+    const data = await handlerResult(jsonResult);
+    
+    return data;
+
+}
