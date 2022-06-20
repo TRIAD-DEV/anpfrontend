@@ -26,19 +26,19 @@ import SnackAlert from "../../components/SnackAlert";
 const steps = ['Empresa', 'Endereço', 'ANP'];
 
 const columns = [
-    { id: 'acoes', label: 'Ações' },
+    //{ id: 'acoes', label: 'Ações' },
     { id: 'cnpj', label: 'CNPJ' },
     { id: 'razaoSocial', label: 'Razão Social' },
     { id: 'nomeFantasia', label: 'Nome Fantasia' },
     { id: 'bandeira', label: 'Bandeira' },
-    { id: 'situacao', label: 'Situação ANP' },
+    //{ id: 'situacao', label: 'Situação ANP' },
     { id: 'endereco', label: 'Endereço' },
     { id: 'complemento', label: 'Complemento' },
     { id: 'bairro', label: 'Bairro' },
     { id: 'cidade', label: 'Cidade' },
-    { id: 'uf', label: 'UF' },
-    { id: 'regiao', label: 'Região' },
-    { id: 'geolocalizacao', label: 'lat/lng' }
+    //{ id: 'uf', label: 'UF' },
+    //{ id: 'regiao', label: 'Região' },
+    //{ id: 'geolocalizacao', label: 'lat/lng' }
 ];
 
 const classPosto = {
@@ -180,9 +180,10 @@ function Posto () {
                         <TableRow>
                         {columns.map((column) => (
                             <TableCell
-                                key={column.id}
-                                align={column.align}
-                                style={{ minWidth: column.minWidth }}
+                                //key={column.id}
+                                //align={column.align}
+                                align="right"
+                                //style={{ minWidth: column.minWidth }}
                             >
                                 {column.label}
                             </TableCell>
@@ -191,19 +192,33 @@ function Posto () {
                     </TableHead>
                     <TableBody>
                         {data
-                        /*.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)*/
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => {
                             return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                            <TableRow hover role="checkbox" tabIndex={-1} /*key={row.id}*/>
                                 {columns.map((column) => {
-                                const value = row[column.id];
-                                return (
-                                    <TableCell key={row.id} align={column.align}>
-                                    {column.format && typeof value === 'number'
-                                        ? column.format(value)
-                                        : value}
-                                    </TableCell>
-                                );
+                                if(column.id === 'endereco' 
+                                   || column.id === 'cidade'
+                                   || column.id === 'bairro'
+                                   || column.id === 'complemento'){
+                                    return(
+                                        <TableCell /*key={row.id}*/ align="right">    
+                                            {row.endereco[column.id]}
+                                        </TableCell>
+                                    );
+                                }else if(column.id === 'bandeira'){
+                                    return(
+                                        <TableCell /*key={row.id}*/ align="right">    
+                                            {row.bandeira['nome']}
+                                        </TableCell>
+                                    );
+                                }else{
+                                    return (
+                                        <TableCell /*key={row.id}*/ align="right">    
+                                        {row[column.id]}
+                                        </TableCell>
+                                    );
+                                }
                                 })}
                             </TableRow>
                             );
