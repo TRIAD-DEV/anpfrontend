@@ -24,10 +24,14 @@ import { AdicionarPosto } from "../../repositories/Posto";
 import SnackAlert from "../../components/SnackAlert";
 import PostoService from "../../services/PostoService";
 
+import _uniqueId from 'lodash/uniqueId';
+
+
+
 const steps = ['Empresa', 'Endereço', 'ANP'];
 
 const columns = [
-    //{ id: 'acoes', label: 'Ações' },
+    { id: 'acoes', label: 'Ações' },
     { id: 'cnpj', label: 'CNPJ' },
     { id: 'razaoSocial', label: 'Razão Social' },
     { id: 'nomeFantasia', label: 'Nome Fantasia' },
@@ -66,7 +70,7 @@ function Posto () {
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     
-    useEffect(()=>{RetornarPostos()},[])
+    useEffect(()=>{RetornarPostos(); console.log("OK")},[])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -113,12 +117,12 @@ function Posto () {
         }
     }
 
-    async function RetornarPostos(posto) {
+    async function RetornarPostos() {
         try {
             let postoService = new PostoService()
             let result = await postoService.findAll();
             console.log(result);
-            setOpenSuccess(true);
+            //setOpenSuccess(true);
             setData(result);
         } catch (error) {
             console.log(error);
@@ -184,8 +188,8 @@ function Posto () {
                             <TableCell
                                 //key={column.id}
                                 //align={column.align}
-                                align="right"
-                                //style={{ minWidth: column.minWidth }}
+                                align="center"
+                                style={{ minWidth: column.minWidth }}
                             >
                                 {column.label}
                             </TableCell>
@@ -197,14 +201,13 @@ function Posto () {
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => {
                             return (
-                            <TableRow hover role="checkbox" tabIndex={-1} /*key={row.id}*/>
-                                {columns.map((column) => {
-                                    return (
-                                        <TableCell /*key={row.id}*/ align="right">    
-                                        {row[column.id]}
-                                        </TableCell>
-                                    );                               
-                                })}
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.codigo}>
+                                {columns.map((column) =>                                                                    
+                                    <TableCell key={_uniqueId('prefix-')} 
+                                    align="center">    
+                                    {row[column.id]}
+                                    </TableCell>                                                                                                           
+                                )}
                             </TableRow>
                             );
                         })}

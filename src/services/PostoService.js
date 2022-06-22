@@ -4,7 +4,7 @@ import { RetornaPostos } from "../repositories/Posto";
 export default class PostoService{
     async findAll(){
         let postos = await RetornaPostos()
-        let postosSerializer = postos.map((posto)=> {return new Posto(posto)})
+        let postosSerializer = postos.map((posto)=> new Posto(posto))
         return postosSerializer
     }
 }
