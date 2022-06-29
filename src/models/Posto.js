@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import React from "react";
+import  { DeletaPosto } from "../repositories/Posto"
 
 export default class Posto{
     constructor({codigo,cnpj,razaoSocial,nomeFantasia,bandeira,
@@ -20,12 +21,7 @@ export default class Posto{
         this.regiao = regiao;
         this.geolocalizacao = `${latitude} / ${longitude}`;
     }
-
-
-    onClickRemove(){
-        alert("Foi removido")
-    }
-
+    
     get cnpj(){
         return this._cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
     }
@@ -34,8 +30,5 @@ export default class Posto{
         return this._codigo;
     }
 
-    get acoes(){
-        return <Button onClick={this.onClickRemove}>Remover</Button>
-    }
-
+    
 }

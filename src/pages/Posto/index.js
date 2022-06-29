@@ -20,18 +20,18 @@ import {
 import EmpresaForm from "./EmpresaForm";
 import EnderecoForm from "./EnderecoForm";
 import ANPForm from "./ANPForm";
-import { AdicionarPosto } from "../../repositories/Posto";
+import { AdicionarPosto, DeletaPosto } from "../../repositories/Posto";
 import SnackAlert from "../../components/SnackAlert";
 import PostoService from "../../services/PostoService";
 
 import _uniqueId from 'lodash/uniqueId';
-
-
+import { bandeiras } from "../Posto/EmpresaForm/index";
 
 const steps = ['Empresa', 'Endereço', 'ANP'];
 
 const columns = [
     { id: 'acoes', label: 'Ações' },
+    { id: 'codigo', label: 'ID'},
     { id: 'cnpj', label: 'CNPJ' },
     { id: 'razaoSocial', label: 'Razão Social' },
     { id: 'nomeFantasia', label: 'Nome Fantasia' },
@@ -57,8 +57,10 @@ const classPosto = {
     estadoId: 0,
     latitude: 0,
     longitude: 0,
-    situacaoId: 0
+    situacaoId: 0,
+    bandeiraId: 0,
 }
+
 
 function Posto () {
     const [data, setData] = useState([]);
@@ -70,7 +72,7 @@ function Posto () {
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     
-    useEffect(()=>{RetornarPostos(); console.log("OK")},[])
+    useEffect(()=>{RetornarPostos()},[])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -110,7 +112,9 @@ function Posto () {
         try {
             let result = await AdicionarPosto(posto);
             console.log(result);
+            RetornarPostos()
             setOpenSuccess(true);
+            
         } catch (error) {
             console.log(error);
             setOpenError(true);
@@ -128,6 +132,44 @@ function Posto () {
             console.log(error);
             setOpenError(true);
         }
+    }
+
+    async function deletarPosto(id) {
+        try {
+            let result = await DeletaPosto(id);
+            console.log(result);
+            setData(data.filter((item) => item.codigo != id))
+            //setOpenSuccess(true);
+        } catch (error) {
+            console.log(error);
+            setOpenError(true);
+        }
+    }
+
+    function onClickRemove(id){
+        deletarPosto(id);
+    }
+
+    function onClickEditar(id){
+        let posto = data.filter((item) => item.codigo == id)[0]
+        console.log(posto)
+        let novoPosto = 
+        {
+            cnpj: '',
+            razaoSocial: '',
+            nomeFantasia: '',
+            endereco: '',
+            complemento: '',
+            bairro: posto.bairro,
+            cidade: '',
+            estadoId: 0,
+            latitude: 0,
+            longitude: 0,
+            situacaoId: 0,
+            bandeiraId: bandeiras.filter((item) => item.label == posto.bandeira)[0].value,
+        }
+        setCriarPosto(novoPosto)
+        console.log(novoPosto)
     }
 
     return (
@@ -202,11 +244,17 @@ function Posto () {
                         .map((row) => {
                             return (
                             <TableRow hover role="checkbox" tabIndex={-1} key={row.codigo}>
-                                {columns.map((column) =>                                                                    
-                                    <TableCell key={_uniqueId('prefix-')} 
-                                    align="center">    
-                                    {row[column.id]}
-                                    </TableCell>                                                                                                           
+                                {   
+                                    columns.map((column) => column.id == "acoes" ? 
+                                    <TableCell>
+                                        <Button onClick={() => (onClickRemove(row.codigo))}>Remover</Button>
+                                        <Button onClick={() => (onClickEditar(row.codigo))}>Editar</Button>
+                                    </TableCell>
+                                    :
+                                    <TableCell key={_uniqueId('prefix-')} align="center">    
+                                        {row[column.id]}
+                                    </TableCell>                                                 
+                                                                                                                                                                                                                                                   
                                 )}
                             </TableRow>
                             );

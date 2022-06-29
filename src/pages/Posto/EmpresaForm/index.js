@@ -1,5 +1,15 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid, TextField, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import React from "react";
+
+export const bandeiras = [
+    {value: '1', label: 'ALE'},
+    {value: '2', label: 'BR'},
+    {value: '3', label: 'IPIRANGA'},
+    {value: '4', label: 'RODOIL'},
+    {value: '5', label: 'SHELL'},
+    {value: '6', label: 'TOTAL'},
+    {value: '7', label: 'BRANCA'}
+]
 
 function EmpresaForm({ posto, setPosto }) {
     const handleChange = (value, key) => {
@@ -8,6 +18,8 @@ function EmpresaForm({ posto, setPosto }) {
             [key]: value
         });
     }
+
+    
 
     return (
         <Grid container spacing={3}>
@@ -46,6 +58,24 @@ function EmpresaForm({ posto, setPosto }) {
                     value={posto.nomeFantasia}
                     onChange={(event) => handleChange(event.target.value, 'nomeFantasia')}
                 />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <FormControl variant="standard" fullWidth>    
+                    <InputLabel id="bandeira">Bandeira</InputLabel>
+                    <Select
+                        required
+                        labelId="bandeira"
+                        id="bandeira"
+                        value={posto.bandeiraId}
+                        onChange={(event) => handleChange(event.target.value, 'bandeiraId')}
+                        label="Bandeira"
+                    >
+                        <MenuItem disabled value={0}>
+                            <em>Selecione...</em>
+                        </MenuItem>
+                        { bandeiras.map(bandeira => <MenuItem key={bandeira.value} value={bandeira.value}>{bandeira.label}</MenuItem>) }
+                    </Select>
+                </FormControl>
             </Grid>
         </Grid>
     );
